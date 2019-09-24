@@ -27,6 +27,16 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+ import PostsComponent from './components/PostsComponent.vue';
+ import CreatePostComponent from './components/CreatePostComponent.vue';
+ import EditPostComponent from './components/EditPostComponent.vue';
+
 const app = new Vue({
     el: '#app',
+    components: {
+        PostsComponent,
+        CreatePostComponent,
+        EditPostComponent,
+
+    }
 });
