@@ -1,12 +1,18 @@
 <template>
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Example Component</div>
+        <div class="columns">
+            <div class="column">
+                <div class="message" v-for="post in posts" :key="post.id">
+                    <div class="message-header">
+                        {{post.post_title}}
+                    </div>
 
-                    <div class="card-body">
-                        I'm an example component.
+                    <div class="message-body">
+                        {{post.post_content}}
+                    </div>
+
+                    <div>
+                        <router-link to="/posts/:post.id/edit/">Edit</router-link>
                     </div>
                 </div>
             </div>
@@ -21,7 +27,12 @@
         },
         data() {
             return {
+                posts: []
             }
+        },
+        created() {
+            axios.get('/posts')
+                .then(({data}) => this.posts = data);
         },
     }
 </script>

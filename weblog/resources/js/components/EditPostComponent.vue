@@ -1,15 +1,19 @@
 <template>
    <div class="container">
-        <form action="" method="POST">
-            {{ method_field('PATCH') }}
+        <form @submit.prevent="onSubmit" @keydown="form.errors.clear()">
+            
             <div class="form-group">
                 <div>
-                    <input type="text" class="form-control" name="post_title" placeholder="post title" value="">
+                    <p>Title:</p>
+                    <input type="text" class="form-control" name="post_title" placeholder="post title" v-model="form.post_title">
+                    <span class="help is-danger" v-if="form.errors.has('post_title')" v-text="form.errors.get('post_title')"></span>
                 </div>
             </div>
             <div class="form-group">
                 <div>
-                    <input type="textarea" class="form-control" name="post_content" placeholder="the content of your post goes here" value="">
+                    <p>Content:</p>
+                   <textarea class="textarea" name="post_content" placeholder="the content of your post goes here" v-model="form.post_content"></textarea>
+                    <span class="help is-danger" v-if="form.errors.has('post_content')" v-text="form.errors.get('post_content')"></span>
                 </div>
             </div>
         </form>
@@ -23,9 +27,13 @@ export default {
     },
     data() {
         return {
-            post_title: '',
-            post_content: ''
+            form: this.post,
+            post: axios.get('/posts/:post.id')
+                .then(({data}) => this.post = data)
         }
     },
+    onSubmit() {
+                this.form.patch('/posts/:post.id/edit')   
+            }   
 }
 </script>

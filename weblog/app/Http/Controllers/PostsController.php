@@ -15,7 +15,7 @@ class PostsController extends Controller
     public function index()
     {
         $posts = Post::all();
-        return view('posts.index', compact('posts'));
+        return $posts;
     }
 
     /**
@@ -36,14 +36,13 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, ['post_title' => 'required', 'post_content' => 'required']);
         $post = new Post();
-
-        $post->title = request('post_title');
-        $post->content = request('post_content');
-
+        $post->post_title = request('post_title');
+        $post->post_content = request('post_content');
         $post->save();
 
-        return redirect('/posts');
+        return $post;
     }
 
     /**
@@ -54,8 +53,7 @@ class PostsController extends Controller
      */
     public function show(Post $post)
     {
-        
-        return view('posts.show', compact('post'));
+        return $post;
     }
 
     /**
@@ -66,8 +64,7 @@ class PostsController extends Controller
      */
     public function edit(Post $post)
     {
-        
-        return view('posts.edit', compact('post'));
+        return $post;
     }
 
     /**
@@ -86,7 +83,7 @@ class PostsController extends Controller
 
         $post->save();
 
-        return redirect('/posts/{post}/show', compact('post'));
+       return $post;
     }
 
     /**
@@ -99,6 +96,6 @@ class PostsController extends Controller
     {
         $post->delete();
 
-        return redirect('/posts');
+        return redirect('/');
     }
 }

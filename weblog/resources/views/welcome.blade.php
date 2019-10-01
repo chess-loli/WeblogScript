@@ -9,9 +9,13 @@
     </head>
     <body>
         <div id="app">
-            <div>
-                <posts-component></posts-component>
-            </div>
+            @include ('layouts.header')
+
+            <section class="section">
+                <div class="container">
+                    <router-view></router-view>
+                </div>
+            </section>
         </div>
 
         <script src="./js/app.js"></script>
