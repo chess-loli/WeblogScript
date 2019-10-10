@@ -25,7 +25,7 @@ class PostsController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        
     }
 
     /**
@@ -41,8 +41,6 @@ class PostsController extends Controller
         $post->post_title = request('post_title');
         $post->post_content = request('post_content');
         $post->save();
-
-        return $post;
     }
 
     /**
@@ -76,14 +74,12 @@ class PostsController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        
-
-        $post->title = request('title');
-        $post->content = request('content');
+        $this->validate($request, ['post_title' => 'required', 'post_content' => 'required']);
+        $post->post_title = request('post_title');
+        $post->post_content = request('post_content');
 
         $post->save();
-
-       return $post;
+       
     }
 
     /**
@@ -95,7 +91,5 @@ class PostsController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
-
-        return redirect('/');
     }
 }

@@ -7,10 +7,15 @@ let routes = [
     },
     {
         path: '/create',
-        component: require('./components/CreatePostComponent').default
+        component: require('./components/CreatePostComponent').default,
     },
     {
-        path: '/posts/:post.id/edit',
+        path: '/created',
+        redirect: '/'
+    },
+    {
+        path: '/posts/:id/edit',
+        name: 'posts.edit',
         component: require('./components/EditPostComponent').default
     },
 ];

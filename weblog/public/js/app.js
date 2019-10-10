@@ -1878,7 +1878,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     onSubmit: function onSubmit() {
-      this.form.post('/posts');
+      var _this = this;
+
+      this.form.post('/api/posts').then(function () {
+        _this.$router.push('/');
+      });
     }
   }
 });
@@ -1916,21 +1920,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {},
-  data: function data() {
+  mounted: function mounted() {
     var _this = this;
 
+    axios.get("/api/posts/".concat(this.$route.params.id)).then(function (_ref) {
+      var data = _ref.data;
+      _this.form = new Form(data);
+
+      _this.form.errors.clear();
+    });
+  },
+  data: function data() {
     return {
-      form: this.post,
-      post: axios.get('/posts/:post.id').then(function (_ref) {
-        var data = _ref.data;
-        return _this.post = data;
+      form: new Form({
+        post_title: '',
+        post_content: ''
       })
     };
   },
-  onSubmit: function onSubmit() {
-    this.form.patch('/posts/:post.id/edit');
+  methods: {
+    onSubmit: function onSubmit() {
+      this.form.patch("/api/posts/".concat(this.$route.params.id));
+    }
   }
 });
 
@@ -1967,6 +1984,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {},
   data: function data() {
@@ -1977,10 +1995,24 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    axios.get('/posts').then(function (_ref) {
+    axios.get('api/posts').then(function (_ref) {
       var data = _ref.data;
       return _this.posts = data;
     });
+  },
+  methods: {
+    deletePost: function deletePost(postid) {
+      var _this2 = this;
+
+      axios.post("api/posts/".concat(postid), {
+        '_method': 'DELETE'
+      }); // .then remove post from posts;
+
+      axios.get('api/posts').then(function (_ref2) {
+        var data = _ref2.data;
+        return _this2.posts = data;
+      });
+    }
   }
 });
 
@@ -2499,9 +2531,6 @@ var render = function() {
           submit: function($event) {
             $event.preventDefault()
             return _vm.onSubmit($event)
-          },
-          keydown: function($event) {
-            return _vm.form.errors.clear()
           }
         }
       },
@@ -2527,6 +2556,9 @@ var render = function() {
               },
               domProps: { value: _vm.form.post_title },
               on: {
+                keydown: function($event) {
+                  return _vm.form.errors.clear("post_title")
+                },
                 input: function($event) {
                   if ($event.target.composing) {
                     return
@@ -2567,6 +2599,9 @@ var render = function() {
               },
               domProps: { value: _vm.form.post_content },
               on: {
+                keydown: function($event) {
+                  return _vm.form.errors.clear("post_content")
+                },
                 input: function($event) {
                   if ($event.target.composing) {
                     return
@@ -2633,9 +2668,6 @@ var render = function() {
           submit: function($event) {
             $event.preventDefault()
             return _vm.onSubmit($event)
-          },
-          keydown: function($event) {
-            return _vm.form.errors.clear()
           }
         }
       },
@@ -2661,6 +2693,9 @@ var render = function() {
               },
               domProps: { value: _vm.form.post_title },
               on: {
+                keydown: function($event) {
+                  return _vm.form.errors.clear("post_title")
+                },
                 input: function($event) {
                   if ($event.target.composing) {
                     return
@@ -2701,6 +2736,9 @@ var render = function() {
               },
               domProps: { value: _vm.form.post_content },
               on: {
+                keydown: function($event) {
+                  return _vm.form.errors.clear("post_content")
+                },
                 input: function($event) {
                   if ($event.target.composing) {
                     return
@@ -2718,6 +2756,19 @@ var render = function() {
                   }
                 })
               : _vm._e()
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("div", [
+            _c(
+              "button",
+              {
+                staticClass: "button is-primary",
+                attrs: { type: "submit", disabled: _vm.form.errors.any() }
+              },
+              [_vm._v("confirm edit")]
+            )
           ])
         ])
       ]
@@ -2754,11 +2805,17 @@ var render = function() {
         _vm._l(_vm.posts, function(post) {
           return _c("div", { key: post.id, staticClass: "message" }, [
             _c("div", { staticClass: "message-header" }, [
-              _vm._v(
-                "\n                    " +
-                  _vm._s(post.post_title) +
-                  "\n                "
-              )
+              _c("p", [_vm._v(_vm._s(post.post_title))]),
+              _vm._v(" "),
+              _c("button", {
+                staticClass: "delete",
+                attrs: { "aria-label": "delete" },
+                on: {
+                  click: function($event) {
+                    return _vm.deletePost(post.id)
+                  }
+                }
+              })
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "message-body" }, [
@@ -2771,10 +2828,17 @@ var render = function() {
             _vm._v(" "),
             _c(
               "div",
+              { staticClass: "has-text-right" },
               [
-                _c("router-link", { attrs: { to: "/posts/:post.id/edit/" } }, [
-                  _vm._v("Edit")
-                ])
+                _c(
+                  "router-link",
+                  {
+                    attrs: {
+                      to: { name: "posts.edit", params: { id: post.id } }
+                    }
+                  },
+                  [_vm._v("Edit")]
+                )
               ],
               1
             )
@@ -18064,7 +18128,11 @@ var routes = [{
   path: '/create',
   component: __webpack_require__(/*! ./components/CreatePostComponent */ "./resources/js/components/CreatePostComponent.vue")["default"]
 }, {
-  path: '/posts/:post.id/edit',
+  path: '/created',
+  redirect: '/'
+}, {
+  path: '/posts/:id/edit',
+  name: 'posts.edit',
   component: __webpack_require__(/*! ./components/EditPostComponent */ "./resources/js/components/EditPostComponent.vue")["default"]
 }];
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
@@ -18298,9 +18366,9 @@ function () {
 
           resolve(response.data);
         })["catch"](function (error) {
-          _this.onFail(error.response.data);
+          _this.onFail(error.response.data.errors);
 
-          reject(error.response.data);
+          reject(error.response.data.errors);
         });
       });
     }

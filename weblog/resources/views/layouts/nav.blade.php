@@ -8,10 +8,6 @@
             <router-link tag="li" to="/create">
                 <a>New</a>
             </router-link>
-
-            {{-- <router-link tag="li" to="/">
-                <a>Contact</a>
-            </router-link> --}}
         </ul>
     </div>
 </nav>
