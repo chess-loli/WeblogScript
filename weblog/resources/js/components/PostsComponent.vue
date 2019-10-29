@@ -5,7 +5,7 @@
                 <div class="message" v-for="post in posts" :key="post.id">
                     <div class="message-header">
                         <p>{{post.post_title}}</p>
-                        <button class="delete" aria-label="delete" @click="deletePost(post.id)"></button>
+                        <button class="delete" aria-label="delete" @click="deletePostAction(post)"></button>
                     </div>
 
                     <div class="message-body">
@@ -22,25 +22,26 @@
 </template>
 
 <script>
+    import {mapState, mapMutations, mapActions, mapGetters} from 'vuex';
     export default {
         mounted() {
             
         },
-        data() {
-            return {
-                posts: []
-            }
-        },
         created() {
-            axios.get('api/posts')
-                .then(({data}) => this.posts = data);
+            
         },
         methods: {
-            deletePost(postid) {
-                axios.post(`api/posts/${postid}`, {'_method': 'DELETE'})// .then remove post from posts;
-                axios.get('api/posts')
-                .then(({data}) => this.posts = data);
-            },
+            ...mapActions([
+                'deletePostAction',
+            ])
+        },
+        computed: {
+            ...mapState([
+                'posts'
+            ]),
+            ...mapActions([
+                'getAllPostsAction',
+            ]),
         }
     }
 </script>

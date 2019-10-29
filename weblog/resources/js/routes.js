@@ -18,6 +18,16 @@ let routes = [
         name: 'posts.edit',
         component: require('./components/EditPostComponent').default
     },
+    {
+        path: '/users/login',
+        name: 'users.login',
+        component: require('./components/loginComponent').default
+    },
+    {
+        path: '/users/signup',
+        name: 'users.signup',
+        component: require('./components/signupComponent').default
+    }
 ];
 
 

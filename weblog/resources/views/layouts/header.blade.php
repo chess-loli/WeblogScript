@@ -2,6 +2,8 @@
 	<!-- Hero header: will stick at the top -->
 	<div class="hero-head">
 		<header class="nav">
+			<router-link to="/users/login">log in</router-link>
+			<router-link to="/users/signup">sign up</router-link>
 		</header>
 	</div>
 

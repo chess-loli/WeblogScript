@@ -26,12 +26,12 @@
 </template>
 
 <script>
+import {mapState, mapMutations, mapActions, mapGetters} from 'vuex';
 export default {
     mounted() {      
         axios.get(`/api/posts/${this.$route.params.id}`)
                 .then(({data}) => {
                     this.form = new Form(data);
-                    this.form.errors.clear();
                 });               
     },
     data() {
@@ -43,9 +43,9 @@ export default {
         }
     },
     methods: {
-        
         onSubmit() {
-                this.form.patch(`/api/posts/${this.$route.params.id}`)   
+                var payload = {'formData': this.form, 'id': this.$route.params.id}
+                this.$store.dispatch('editPostAction', payload).then(() => this.$router.push('/'))
             }   
     },
     

@@ -21,3 +21,4 @@ Route::get('/posts', function () {
     return Post::get();
 });
 Route::resource('posts', 'PostsController');
+Route::resource('users', 'UsersController');

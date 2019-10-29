@@ -27,6 +27,7 @@
 
 
 <script>
+    import {mapState, mapMutations, mapActions, mapGetters} from 'vuex';
     export default {
         mounted() {
             
@@ -39,13 +40,15 @@
                 })
             }
         },
-        methods: {
+        methods: {            
             onSubmit() {
-                this.form
-                    .post('/api/posts').then(() => {
-                        this.$router.push('/')
-                    });
-            }   
+                this.$store.dispatch('createPostAction', this.form).then(() => {
+                    this.$router.push('/')
+                });
+            },
+        },
+        computed: {
+            
         },
     }
 </script>
