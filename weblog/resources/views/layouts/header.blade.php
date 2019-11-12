@@ -1,10 +1,16 @@
 <section class="hero is-primary is-medium">
 	<!-- Hero header: will stick at the top -->
 	<div class="hero-head">
-		<header class="nav">
-			<router-link to="/users/login">log in</router-link>
-			<router-link to="/users/signup">sign up</router-link>
-		</header>
+		<nav class="navbar">
+			<div class="container">
+				<div id="navbarMenuHeroA" class="navbar-menu">
+					<div class="navbar-end">
+						<router-link to="/users/login" class="navbar-item">log in</router-link>
+						<router-link to="/users/signup" class="navbar-item">sign up</router-link>
+					</div>
+				</div>
+			</div>
+		</nav>
 	</div>
 
 	<!-- Hero content: will be in the middle -->

@@ -2028,11 +2028,54 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {},
   created: function created() {},
-  methods: {},
+  data: function data() {
+    return {
+      form: new Form({
+        name: '',
+        email: '',
+        password: ''
+      })
+    };
+  },
+  methods: {
+    onSubmit: function onSubmit() {
+      this.$store.dispatch('loginUserAction', this.form);
+    }
+  },
   computed: {}
 });
 
@@ -2053,11 +2096,65 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {},
   created: function created() {},
-  methods: {},
+  data: function data() {
+    return {
+      form: new Form({
+        name: '',
+        email: '',
+        password: ''
+      })
+    };
+  },
+  methods: {
+    onSubmit: function onSubmit() {
+      var _this = this;
+
+      this.$store.dispatch('signupUserAction', this.form).then(function () {
+        return _this.$router.push('/');
+      });
+    }
+  },
   computed: {}
 });
 
@@ -2916,14 +3013,146 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container" }, [
+    _c(
+      "form",
+      {
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.onSubmit($event)
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "form-group" }, [
+          _c("p", [_vm._v("Name:")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "field" }, [
+            _c("p", { staticClass: "control" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.name,
+                    expression: "form.name"
+                  }
+                ],
+                staticClass: "input is-rounded",
+                attrs: { type: "text", name: "name", placeholder: "name" },
+                domProps: { value: _vm.form.name },
+                on: {
+                  keydown: function($event) {
+                    return _vm.form.errors.clear("name")
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "name", $event.target.value)
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("p", [_vm._v("Email:")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "field" }, [
+            _c("p", { staticClass: "control has-icons-left has-icons-right" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.email,
+                    expression: "form.email"
+                  }
+                ],
+                staticClass: "input is-rounded",
+                attrs: { type: "email", name: "email", placeholder: "email" },
+                domProps: { value: _vm.form.email },
+                on: {
+                  keydown: function($event) {
+                    return _vm.form.errors.clear("email")
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "email", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _vm._m(0),
+              _vm._v(" "),
+              _vm._m(1)
+            ])
+          ]),
+          _vm._v(" "),
+          _c("p", [_vm._v("Password:")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "field" }, [
+            _c("p", { staticClass: "control has-icons-left" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.password,
+                    expression: "form.password"
+                  }
+                ],
+                staticClass: "input is-rounded",
+                attrs: { type: "password", name: "password" },
+                domProps: { value: _vm.form.password },
+                on: {
+                  keydown: function($event) {
+                    return _vm.form.errors.clear("password")
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "password", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _vm._m(2)
+            ])
+          ])
+        ])
+      ]
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [_c("p", [_vm._v("heeey")])])
+    return _c("span", { staticClass: "icon is-small is-left" }, [
+      _c("i", { staticClass: "fas fa-envelope" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "icon is-small is-right" }, [
+      _c("i", { staticClass: "fas fa-check" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "icon is-small is-left" }, [
+      _c("i", { staticClass: "fas fa-lock" })
+    ])
   }
 ]
 render._withStripped = true
@@ -2947,14 +3176,164 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container" }, [
+    _c(
+      "form",
+      {
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.onSubmit($event)
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "form-group" }, [
+          _c("p", [_vm._v("Name:")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "field" }, [
+            _c("p", { staticClass: "control" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.name,
+                    expression: "form.name"
+                  }
+                ],
+                staticClass: "input is-rounded",
+                attrs: { type: "text", name: "name", placeholder: "name" },
+                domProps: { value: _vm.form.name },
+                on: {
+                  keydown: function($event) {
+                    return _vm.form.errors.clear("name")
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "name", $event.target.value)
+                  }
+                }
+              })
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("p", [_vm._v("Email:")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "field" }, [
+            _c("p", { staticClass: "control has-icons-left has-icons-right" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.email,
+                    expression: "form.email"
+                  }
+                ],
+                staticClass: "input is-rounded",
+                attrs: { type: "email", name: "email", placeholder: "email" },
+                domProps: { value: _vm.form.email },
+                on: {
+                  keydown: function($event) {
+                    return _vm.form.errors.clear("email")
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "email", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _vm._m(0),
+              _vm._v(" "),
+              _vm._m(1)
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("p", [_vm._v("Password:")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "field" }, [
+            _c("p", { staticClass: "control has-icons-left" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.password,
+                    expression: "form.password"
+                  }
+                ],
+                staticClass: "input is-rounded",
+                attrs: { type: "password", name: "password" },
+                domProps: { value: _vm.form.password },
+                on: {
+                  keydown: function($event) {
+                    return _vm.form.errors.clear("password")
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "password", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _vm._m(2)
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(3)
+      ]
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [_c("p", [_vm._v("heeey")])])
+    return _c("span", { staticClass: "icon is-small is-left" }, [
+      _c("i", { staticClass: "fas fa-envelope" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "icon is-small is-right" }, [
+      _c("i", { staticClass: "fas fa-check" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "icon is-small is-left" }, [
+      _c("i", { staticClass: "fas fa-lock" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c(
+        "button",
+        { staticClass: "button is-primary", attrs: { type: "submit" } },
+        [_vm._v("sign up")]
+      )
+    ])
   }
 ]
 render._withStripped = true
@@ -19467,6 +19846,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     createPostMutation: function createPostMutation(state, data) {
       state.posts = data;
+    },
+    signupUserMutation: function signupUserMutation(state, data) {
+      state.users = data;
     }
   },
   actions: {
@@ -19493,6 +19875,19 @@ __webpack_require__.r(__webpack_exports__);
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('api/posts').then(function (_ref3) {
         var data = _ref3.data;
         return context.commit('createPostMutation', data);
+      });
+    },
+    signupUserAction: function signupUserAction(context, formData) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('api/users', formData);
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('api/users').then(function (_ref4) {
+        var data = _ref4.data;
+        return context.commit('signupUserMutation', data);
+      });
+    },
+    loginUserAction: function loginUserAction(context, formData) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("api/auth/login?email=".concat(formData.email, "&password=").concat(formData.password)).then(function (_ref5) {
+        var data = _ref5.data;
+        return context.commit('loginUserMutation', data);
       });
     }
   },

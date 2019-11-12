@@ -21,6 +21,9 @@ export default new Vuex.Store({
         createPostMutation(state, data) {
             state.posts = data
         },
+        signupUserMutation(state, data) {
+            state.users = data
+        },
     },
     actions: {
         getAllPostsAction(context) {
@@ -39,6 +42,13 @@ export default new Vuex.Store({
             axios.post('api/posts', formData)
             axios.get('api/posts').then(({data}) => context.commit('createPostMutation', data))
         },
+        signupUserAction(context, formData) {
+            axios.post('api/users', formData)
+            axios.get('api/users').then(({data}) => context.commit('signupUserMutation', data))
+        },
+        loginUserAction(context, formData) {
+            axios.post(`api/auth/login?email=${formData.email}&password=${formData.password}`).then(({data}) => context.commit('loginUserMutation', data))
+        }
     },
     getters: {
         allPostsGetter(state) {
