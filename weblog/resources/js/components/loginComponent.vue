@@ -2,12 +2,6 @@
     <div class="container">
         <form @submit.prevent="onSubmit">
             <div class="form-group">
-                <p>Name:</p>
-                <div class="field">
-                    <p class="control">
-                        <input type="text" class="input is-rounded" name="name" placeholder="name" v-model="form.name"  @keydown="form.errors.clear('name')">
-                    </p>
-                </div>
                 <p>Email:</p>
                 <div class="field">
                     <p class="control has-icons-left has-icons-right">
@@ -29,6 +23,9 @@
                         </span>
                     </p>
                 </div>
+                <div class="control">
+                    <button class="button is-primary" type="submit">log in</button>
+                </div>
             </div>
         </form>
     </div>
@@ -45,7 +42,6 @@
         data() {
             return {
                 form: new Form({
-                    name: '',
                     email: '',
                     password: ''
                 })
@@ -54,6 +50,12 @@
         methods: {
             onSubmit() {
                 this.$store.dispatch('loginUserAction', this.form)
+                .then(response => {this.$store.dispatch('fetchUserAction')})
+                .then(response => {
+                    this.$router.push('/')
+                })
+                .catch(errors => alert(errors))
+
             },
         },
         computed: {

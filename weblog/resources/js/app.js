@@ -1,15 +1,19 @@
 import './bootstrap';
-import router from './routes';
 import store from './store';
+import router from './routes';
 
 
 
 new Vue({
     el: '#app',
    
+    store,
+
     router,
 
-    store,
+    created() {
+
+    },
 
     computed: {
         

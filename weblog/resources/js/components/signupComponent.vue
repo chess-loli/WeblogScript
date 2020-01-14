@@ -8,8 +8,6 @@
                         <input type="text" class="input is-rounded" name="name" placeholder="name" v-model="form.name"  @keydown="form.errors.clear('name')">
                     </p>
                 </div>
-            </div>
-            <div class="form-group">
                 <p>Email:</p>
                 <div class="field">
                     <p class="control has-icons-left has-icons-right">
@@ -22,8 +20,6 @@
                         </span>
                     </p>
                 </div>
-            </div>
-            <div class="form-group">
                 <p>Password:</p>
                 <div class="field">
                     <p class="control has-icons-left">
@@ -33,9 +29,9 @@
                         </span>
                     </p>
                 </div>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="button is-primary">sign up</button>
+                <div class="control">
+                    <button type="submit" class="button is-primary">sign up</button>
+                </div>
             </div>
         </form>
     </div>

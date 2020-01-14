@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
 
-class UsersController extends Controller
+class CommentsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +13,8 @@ class UsersController extends Controller
      */
     public function index()
     {
-        //
+        $comments = Comment::all();
+        return $comments;
     }
 
     /**
@@ -35,12 +35,12 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, ['name' => 'required', 'email' => 'required', 'password' => 'required']);
-        $user = new User();
-        $user->name = request('name');
-        $user->email = request('email');
-        $user->password = bcrypt(request('password'));
-        $user->save();
+        $this->validate($request, ['comment_content' => 'required', 'user_id' => 'required', 'post_id' => 'required']);
+        $comment = new Comment();
+        $comment->comment_content = request('comment_content');
+        $comment->post_id = request('post_id');
+        $comment->user_id = request('user_id');
+        $comment->save();
     }
 
     /**
@@ -51,7 +51,7 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        return $user;
+        //
     }
 
     /**
@@ -60,9 +60,9 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit($id)
     {
-        return $user;
+        
     }
 
     /**
@@ -72,13 +72,13 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, Post $post)
     {
-        $this->validate($request, ['name' => 'required', 'email' => 'required', 'password' => 'required']);
-        $user->name = request('name');
-        $user->email = request('email');
-        $user->password = bcrypt(request('password'));
-        $user->save();
+        $this->validate($request, ['comment_content' => 'required', 'user_id' => 'required', 'post_id' => 'required']);
+        $comment->comment_content = request('comment_content');
+        $comment->post_id = request('post_id');
+        $comment->user_id = request('user_id');
+        $comment->save();
     }
 
     /**
@@ -87,8 +87,8 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Post $post)
     {
-        $user->delete();
+        $comment->delete();
     }
 }

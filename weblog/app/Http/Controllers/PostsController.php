@@ -1,12 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use App\Post;
 use Illuminate\Http\Request;
 
 class PostsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['index']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +18,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::orderBy('updated_at', 'DESC')->get();
         return $posts;
     }
 
@@ -36,10 +40,11 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, ['post_title' => 'required', 'post_content' => 'required']);
+        $this->validate($request, ['post_title' => 'required', 'post_content' => 'required', 'user_id' => 'required']);
         $post = new Post();
         $post->post_title = request('post_title');
         $post->post_content = request('post_content');
+        $post->user_id = request('user_id');
         $post->save();
     }
 
@@ -74,9 +79,10 @@ class PostsController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        $this->validate($request, ['post_title' => 'required', 'post_content' => 'required']);
+        $this->validate($request, ['post_title' => 'required', 'post_content' => 'required', 'user_id' => 'required']);
         $post->post_title = request('post_title');
         $post->post_content = request('post_content');
+        $post->user_id = request('user_id');
 
         $post->save();
        

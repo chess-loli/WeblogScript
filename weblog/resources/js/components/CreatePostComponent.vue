@@ -30,13 +30,14 @@
     import {mapState, mapMutations, mapActions, mapGetters} from 'vuex';
     export default {
         mounted() {
-            
+            this.form.user_id = this.current_user.id
         },
         data() {
             return {
                 form: new Form({
                     post_title: '',
-                    post_content: ''
+                    post_content: '',
+                    user_id: ''
                 })
             }
         },
@@ -48,7 +49,10 @@
             },
         },
         computed: {
-            
+            ...mapState([
+                'current_user',
+                'auth_token'
+            ])
         },
     }
 </script>

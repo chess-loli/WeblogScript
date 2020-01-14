@@ -7,6 +7,8 @@
 					<div class="navbar-end">
 						<router-link to="/users/login" class="navbar-item">log in</router-link>
 						<router-link to="/users/signup" class="navbar-item">sign up</router-link>
+						<router-link to="/users/logout" class="navbar-item">log out</router-link>
+						<router-link to="/users/profile" class="navbar-item">profile</router-link>
 					</div>
 				</div>
 			</div>
