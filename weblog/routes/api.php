@@ -20,8 +20,10 @@ use App\Post;
 Route::get('/posts', function () {
     return Post::get();
 });
+Route::resource('comments', 'CommentsController');
 Route::resource('posts', 'PostsController');
 Route::resource('users', 'UsersController');
+Route::resource('categories', 'CategoriesController');
 Route::group([
     'prefix' => 'auth'
 ], function ($router) {
@@ -29,4 +31,12 @@ Route::group([
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
     Route::get('me', 'AuthController@me');
+});
+use App\Comment;
+Route::get('/comments', function () {
+    return Comment::get();
+});
+use App\Category;
+Route::get('/categories', function () {
+    return Category::get();
 });

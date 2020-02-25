@@ -8,21 +8,46 @@ export default new Vuex.Store({
     state: {
         posts: [],
         users: [],
-        current_user: null,
         comments: [],
+        current_user: null,
+        categories: [],
     },
     mutations: {
         getAllPostsMutation(state, data) {
             state.posts = data.data
         },
+        getAllCommentsMutation(state, data) {
+            state.comments = data.data
+        },
+        getAllCategoriesMutation(state, data) {
+            state.categories = data.data
+        },
         deletePostMutation(state, post) {
             state.posts.splice(state.posts.indexOf(post), 1)
+        },
+        deleteCommentMutation(state, comment) {
+            state.comments.splice(state.comments.indexOf(comment), 1)
+        },
+        deleteCategoryMutation(state, category) {
+            state.categories.splice(state.categories.indexOf(category), 1)
         },
         editPostMutation(state, data) {
             state.posts = data.data 
         },
+        editCommentMutation(state, data) {
+            state.comments = data.data
+        },
+        editCategoryMutation(state, data) {
+            state.categories = data.data
+        },
+        createCommentMutation(state, data) {
+            state.comments = data
+        },
         createPostMutation(state, data) {
             state.posts = data
+        },
+        createCategoryMutation(state, data) {
+            state.categories = data
         },
         signupUserMutation(state, data) {
             state.users = data
@@ -42,9 +67,26 @@ export default new Vuex.Store({
             state = state
             localStorage.setItem('token', data.access_token)
         },
+        fetchPostMutation(state, data) {
+            state.posts = [data];
+        },
         
     },
     actions: {
+        createCommentAction(context, payload) {
+            return new Promise((resolve, reject) => {
+                axios.post('api/comments', payload)
+                axios.get('api/comments')
+                .then(({data}) => {
+                    context.commit('createCommentMutation', data)
+                    resolve(data)
+                })
+                .catch(error => {
+                    console.log(error);
+                    reject(error);
+                })
+            })
+        },
         getAllPostsAction(context) {
             return axios.get('api/posts')
             .then(data => {
@@ -54,9 +96,25 @@ export default new Vuex.Store({
                 console.log(error);
             })
         },
+        getAllCommentsAction(context) {
+            return axios.get('api/comments')
+            .then(data => {
+                context.commit('getAllCommentsMutation', data)
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        },
+        getAllCategoriesAction(context) {
+            return axios.get('api/categories')
+            .then(data => {
+                context.commit('getAllCategoriesMutation', data)
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        },
         deletePostAction(context, post) {
-            // axios.post(`api/posts/${post.id}`, {'_method': 'DELETE'})
-            // .then(context.commit('deletePostMutation', post))
             return new Promise((resolve, reject) => {
                 axios.post(`api/posts/${post.id}`, {'_method': 'DELETE'})
                 .then(
@@ -64,6 +122,32 @@ export default new Vuex.Store({
                     resolve(post)
                     )
                 .catch(error => {
+                    reject(error.response.statusText)
+                })
+            })
+        },
+        deleteCommentAction(context, comment) {
+            return new Promise((resolve, reject) => {
+                axios.post(`api/comments/${comment.id}`, {'_method': 'DELETE'})
+                .then(
+                    context.commit('deleteCommentMutation', comment),
+                    resolve(comment)
+                )
+                .catch(error => {
+                    console.log(error);
+                    reject(error.response.statusText)                    
+                })
+            })
+        },
+        deleteCategoryAction(context, category) {
+            return new Promise((resolve, reject) => {
+                axios.post(`api/categories/${category.id}`, {'_method': 'DELETE'})
+                .then(
+                    context.commit('deleteCategoryMutation', category),
+                    resolve(category)
+                )
+                .catch(error => {
+                    console.log(error);
                     reject(error.response.statusText)
                 })
             })
@@ -83,9 +167,49 @@ export default new Vuex.Store({
             })
             
         },
+        editCommentAction(context, payload) {
+            return new Promise((resolve, reject) => {
+                axios.patch(`api/comments/${payload.id}`, payload.formData)
+                axios.get('api/comments')
+                .then(data => {
+                    context.commit('editCommentMutation', data)
+                    resolve(data)
+                })
+                .catch(error => {
+                    console.log(error);
+                    reject(error.response.statusText)
+                    
+                })
+            })
+        },
+        editCategoryAction(context, payload) {
+            return new Promise((resolve, reject) => {
+                axios.patch(`api/categories/${payload.id}`, payload.formData)
+                acios.get('api/categories')
+                .then(data => {
+                    context.commit('editCategoryMutation', data)
+                    resolve(data)
+                })
+                .catch(error => {
+                    console.log(error);
+                    reject(error.response.statusText)
+                })
+            })
+        },
+        fetchPostAction(context, id) {
+            return new Promise((resolve, reject) => {
+                axios.get(`api/posts/${id}`)
+                    .then(({data}) => {
+                        context.commit('fetchPostMutation', data);
+                        resolve(data); 
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        reject(error);
+                    });
+            });
+        },
         createPostAction(context, formData) {
-            // axios.post('api/posts', formData)
-            // axios.get('api/posts').then(({data}) => context.commit('createPostMutation', data))
             return new Promise((resolve, reject) => {
                 axios.post('api/posts', formData)
                 axios.get('api/posts')
@@ -98,15 +222,31 @@ export default new Vuex.Store({
                 })
             })
         },
-        signupUserAction(context, formData) {
-            // axios.post('api/users', formData)
-            // axios.get('api/users').then(({data}) => context.commit('signupUserMutation', data))
-            return axios.post('api/users', formData);
+        createCategoryAction(context, payload) {
+            return new Promise((resolve, reject) => {
+                axios.post('api/categories', payload)
+                axios.get('api/categories')
+                .then(({data}) => {
+                    context.commit('createCategoryMutation', data)
+                    resolve(data)
+                })
+                .catch(error => {
+                    console.log(error);
+                    reject(error.response.statusText)
+                })
+            })
         },
-        loginUserAction(context, formData) {
-            // axios.post(`api/auth/login?email=${formData.email}&password=${formData.password}`).then(({data}) => context.commit('loginUserMutation', data))
-            //return new Promise((resolve, reject) => {
+        signupUserAction(context, formData) {
+            return axios.post('api/users', formData)
+            .then(data => {
+                context.commit('signupUserMutation', data);
+            })
+            .catch(error => {
+                console.log(error);
+            })
             
+        },
+        loginUserAction(context, formData) {            
             return axios.post(`api/auth/login`, {
                     email: formData.email,
                     password: formData.password
@@ -154,6 +294,14 @@ export default new Vuex.Store({
         authIsAuth: (state) => {
             return !!state.current_user;
         },
+        getSinglePost: (state) => {
+            return state.posts.length > 0 ? state.posts[0] : false;
+        },
+        getCommentsByID: (state) => (postID) => {
+            return state.comments.filter(function(comment) {return comment.post_id == postID})
+        },
+        getCommentsFromLoggedInUser: (state) => {
+            return state.comments.filter((comment) => comment.user_id == state.current_user.id)
+        }
     },
-
 });

@@ -29,12 +29,7 @@
 import {mapState, mapMutations, mapActions, mapGetters} from 'vuex';
 export default {
     mounted() {      
-        let config = {
-            headers: {
-                'Authorization': 'Bearer ' + this.$store.state.auth_token
-            }
-        }
-        axios.get(`/api/posts/${this.$route.params.id}`, config)
+        axios.get(`/api/posts/${this.$route.params.id}`)
                 .then(({data}) => {
                     this.form = new Form(data);
                 });               

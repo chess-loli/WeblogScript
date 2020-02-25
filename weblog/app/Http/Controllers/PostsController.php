@@ -56,6 +56,8 @@ class PostsController extends Controller
      */
     public function show(Post $post)
     {
+        // eager load the user
+        $post->load('user');
         return $post;
     }
 

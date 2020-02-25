@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Comment;
+use App\Category;
 
 use Illuminate\Http\Request;
 
-class CommentsController extends Controller
+class CategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class CommentsController extends Controller
      */
     public function index()
     {
-        $comments = Comment::all();
-        return $comments;
+        $categories = Category::all();
+        return $categories;
     }
 
     /**
@@ -36,12 +36,10 @@ class CommentsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, ['comment_content' => 'required', 'user_id' => 'required', 'post_id' => 'required']);
-        $comment = new Comment();
-        $comment->comment_content = request('comment_content');
-        $comment->post_id = request('post_id');
-        $comment->user_id = request('user_id');
-        $comment->save();
+        $this->validate($request, ['title' => 'required']);
+        $category = new Category();
+        $category->title = request('title');
+        $category->save();
     }
 
     /**
@@ -50,9 +48,9 @@ class CommentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Comment $comment)
+    public function show(Category $category)
     {
-        return $comment;
+        return $category;
     }
 
     /**
@@ -61,9 +59,9 @@ class CommentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Comment $comment)
+    public function edit(Category $category)
     {
-        return $comment;
+        return $category;
     }
 
     /**
@@ -73,13 +71,11 @@ class CommentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Comment $comment)
+    public function update(Request $request, Category $category)
     {
-        $this->validate($request, ['comment_content' => 'required', 'user_id' => 'required', 'post_id' => 'required']);
-        $comment->comment_content = request('comment_content');
-        $comment->post_id = request('post_id');
-        $comment->user_id = request('user_id');
-        $comment->save();
+        $this->validate($request, ['title' => 'required']);
+        $category->title = request('title');
+        $category->save();
     }
 
     /**
@@ -88,8 +84,8 @@ class CommentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment)
+    public function destroy(Category $category)
     {
-        $comment->delete();
+        $category->delete();
     }
 }

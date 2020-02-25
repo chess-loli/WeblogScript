@@ -2,21 +2,20 @@
     <div class="container">
         <div class="columns">
             <div class="column">
-                <div class="message" v-for="post in posts" :key="post.id">
+                <article class="message is-primary" v-for="post in posts" :key="post.id">
                     <div class="message-header">
                         <p>{{post.post_title}}</p>
                     </div>
-
                     <div class="message-body">
                         {{post.post_content}}
+                    </div>
+                    <div class="has-test-left">
+                        <router-link :to="{name:'posts.show', params: {id: post.id}}">view comments</router-link>
                     </div>
                     <div class="has-text-right">
                         {{post.updated_at}}
                     </div>
-                    <!-- <div class="has-text-right">
-                        <router-link :to="{name:'posts.edit', params: {id: post.id}}">Edit</router-link>
-                    </div> -->
-                </div>
+                </article>
             </div>
         </div>
     </div>
@@ -45,7 +44,7 @@
             ...mapState([
                 'posts',
                 'current_user',
-                'auth_token',
+                'comments',
             ]),
         }
     }

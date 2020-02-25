@@ -25,6 +25,18 @@ let routes = [
         meta: { private: true }
     },
     {
+        path: '/comments/:id/edit',
+        name: 'comments.edit',
+        component: require('./components/EditCommentComponent').default,
+        meta: { private: true }
+    },
+    {
+        path: '/posts/:id/show',
+        name: 'posts.show',
+        component: require('./components/ShowPostComponent').default,
+        meta: { public: true }
+    },
+    {
         path: '/users/login',
         name: 'users.login',
         component: require('./components/LoginComponent').default,
@@ -48,6 +60,12 @@ let routes = [
         component: require('./components/ProfilePage').default,
         meta: { private: true }
     },
+    {
+        path: '/admin',
+        name: 'admin.page',
+        component: require('./components/AdminDashboard').default,
+        meta: { private: true, admin: true }
+    },
 ];
 
 
@@ -56,15 +74,24 @@ const router = new VueRouter({
     linkActiveClass: 'is-active',
 });
 
+const currentUser = store.state.current_user;
+
 router.beforeEach((to, from, next) =>
 {
     const authRequired = !to.matched.some(record => record.meta.public);
     const loggedIn = store.getters['authIsAuth'];
+    const mustBeAdmin = to.matched.some(record => record.meta.admin);
 
-    if (authRequired && !loggedIn)
+    if (authRequired)
     {
-        return next({ name: 'users.login' });
+        if(!loggedIn) {
+            return next({ name: 'users.login' });
+        }
+        if(mustBeAdmin && currentUser.role != 'admin') {
+            return next({ name: 'users.login' });
+        }
     }
+
     next();
 });
 
