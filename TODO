@@ -1,9 +1,0 @@
-- turn actions in store.js into promises -v-
-- fix formData functionality in store.js actions -v-
-- make it so you can log in with name or email *optional*
-- fix the issue with password showing in the request route -v-
-- look into resources to add on to your model (user properties)
-- work out how to remember the token and where to put it -?-
-- add new and all posts to the currently logged in user -?-
-- add an account page to edit and delete the account? 
-- add that comments can be added to posts and make controllers and migrations for them 
