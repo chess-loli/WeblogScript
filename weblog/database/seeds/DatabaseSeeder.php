@@ -54,7 +54,12 @@ class DatabaseSeeder extends Seeder
             'title' => 'all the uwu'
         ]);
 
-
+        DB::table('users')->insert([
+            'name' => 'admin',
+            'email' => 'admin@admin.com',
+            'password' => bcrypt('admin'),
+            'role' => 'admin'
+        ]);
 
         $faker = Faker::create();
         $categories = Category::all()->pluck('id')->toArray();

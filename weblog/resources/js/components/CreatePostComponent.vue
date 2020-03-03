@@ -16,6 +16,14 @@
                 </div>
             </div>
             <div class="form-group">
+                
+                    <p>Category/Categories:</p>
+                    <select class="form-control" name="category_id" v-for="category in categories" :key="category.id" v-model="form.category_id" multiple>
+                        <option :value="category.id">{{ category.title }}</option>
+                    </select>
+                
+            </div>
+            <div class="form-group">
                 <div class="form-control">
                     <button class="button is-primary" type="submit" :disabled="form.errors.any()">Create Post</button>
 
@@ -30,15 +38,17 @@
     import {mapState, mapMutations, mapActions, mapGetters} from 'vuex';
     export default {
         mounted() {
-            this.form.user_id = this.current_user.id
+            this.form.user_id = this.current_user.id;
+            this.$store.dispatch('getAllCategoriesAction');
         },
         data() {
             return {
                 form: new Form({
                     post_title: '',
                     post_content: '',
-                    user_id: ''
-                })
+                    user_id: '',
+                    category_id: []
+                }),
             }
         },
         methods: {            
@@ -51,7 +61,8 @@
         computed: {
             ...mapState([
                 'current_user',
-                'auth_token'
+                'auth_token', 
+                'categories'
             ])
         },
     }

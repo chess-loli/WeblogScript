@@ -14,7 +14,8 @@ class UsersController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+        return $users;
     }
 
     /**
@@ -40,6 +41,7 @@ class UsersController extends Controller
         $user->name = request('name');
         $user->email = request('email');
         $user->password = bcrypt(request('password'));
+        $user->role = request('role');
         $user->save();
     }
 
@@ -78,6 +80,7 @@ class UsersController extends Controller
         $user->name = request('name');
         $user->email = request('email');
         $user->password = bcrypt(request('password'));
+        $user->role = request('role');
         $user->save();
     }
 

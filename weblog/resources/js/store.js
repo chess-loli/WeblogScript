@@ -22,6 +22,9 @@ export default new Vuex.Store({
         getAllCategoriesMutation(state, data) {
             state.categories = data.data
         },
+        getAllUsersMutation(state, data) {
+            state.users = data.data
+        },
         deletePostMutation(state, post) {
             state.posts.splice(state.posts.indexOf(post), 1)
         },
@@ -112,6 +115,16 @@ export default new Vuex.Store({
             })
             .catch(error => {
                 console.log(error);
+            })
+        },
+        getAllUsersAction(context) {
+            return axios.get('api/users')
+            .then(data => {
+                context.commit('getAllUsersMutation', data)
+            })
+            .catch(error => {
+                console.log(error);
+                
             })
         },
         deletePostAction(context, post) {

@@ -1,11 +1,10 @@
 <template>
-    <div class="container">
-        <ul v-for="user in users" :key="user.id">
-            <li>{{ user.name }}</li>
+    <div>
+        <ul v-for="category in categories" :key="category.id">
+            <li>{{category.title}}</li>
         </ul>
     </div>
 </template>
-
 <script>
 import {mapState, mapMutations, mapActions, mapGetters} from 'vuex';
 export default {
@@ -13,7 +12,7 @@ export default {
         
     },
     created() {
-        this.getAllUsersAction();
+        this.getAllCategoriesAction();
     },
     data() {
         return {
@@ -22,7 +21,7 @@ export default {
     },
     methods: {
         ...mapActions([
-            'getAllUsersAction',
+            'getAllCategoriesAction',
         ])
     },
     computed: {

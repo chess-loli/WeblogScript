@@ -14,7 +14,7 @@ class Post extends Model
     {
         return $this->hasmany(Comment::class);
     }
-    public function category() {
-        return $this->hasmany(Category::class);
+    public function categories() {
+        return $this->belongsToMany(Category::class);
     }
 }

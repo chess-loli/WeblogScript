@@ -40,12 +40,15 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
+        // maak aparte request class voor validatie: 
+        // https://laravel.com/docs/5.8/validation#form-request-validation
         $this->validate($request, ['post_title' => 'required', 'post_content' => 'required', 'user_id' => 'required']);
         $post = new Post();
         $post->post_title = request('post_title');
         $post->post_content = request('post_content');
         $post->user_id = request('user_id');
         $post->save();
+        $post->categories()->attach($request->get('category_id'));
     }
 
     /**
@@ -85,6 +88,7 @@ class PostsController extends Controller
         $post->post_title = request('post_title');
         $post->post_content = request('post_content');
         $post->user_id = request('user_id');
+        $post->categories()->attach('category_id');
 
         $post->save();
        

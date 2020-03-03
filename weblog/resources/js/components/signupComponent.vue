@@ -29,6 +29,7 @@
                         </span>
                     </p>
                 </div>
+                <p></p>
                 <div class="control">
                     <button type="submit" class="button is-primary">sign up</button>
                 </div>
@@ -50,7 +51,8 @@
                 form: new Form({
                     name: '',
                     email: '',
-                    password: ''
+                    password: '',
+                    role: 'user'
                 })
             }
         },

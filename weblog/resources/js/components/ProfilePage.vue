@@ -17,6 +17,11 @@
             <div class="field">
                 <button>edit profile</button>
             </div>
+            <div v-if="user.role == 'admin'">
+                <router-link to="/admin">
+                    <a>admin panel</a>
+                </router-link>
+            </div>
         </div>
         <div class="container">
             <h1 class="title">
@@ -85,16 +90,18 @@ export default {
 
         this.fetchUserAction().then(response => {
                 this.user.name = response.data.name,
-                this.user.email = response.data.email
+                this.user.email = response.data.email,
+                this.user.role = response.data.role
             })
         .catch(errors => console.log(errors))
     },
     data() {
         return {
-            // userPosts: [],
+            
             user: {
                 name: '',
-                email: ''
+                email: '',
+                role: ''
             },
         }
     },
