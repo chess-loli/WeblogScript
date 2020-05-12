@@ -73,6 +73,9 @@ export default new Vuex.Store({
         fetchPostMutation(state, data) {
             state.posts = [data];
         },
+        filterPostsByCategoriesMutation(state, response) {
+            state.posts = response.data
+        }
         
     },
     actions: {
@@ -298,11 +301,26 @@ export default new Vuex.Store({
                     reject(data)
                 })
             })
+        },
+        filterPostsByCategoriesAction(context, payload) {
+            return new Promise((resolve, reject) => {
+                console.log(payload);
+                axios.get('/api/posts', {params: { category_ids: payload.join() }}
+                   
+                  )
+                  .then(function (response) {
+                    context.commit('filterPostsByCategoriesMutation', response)
+                    console.log(response);
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  });
+            })
         }
     },
     getters: {
-        getPostsFromLoggedInUser: (state) => {
-            return state.posts.filter((post) => post.user_id == state.current_user.id)
+        getPostsFromLoggedInUser: (state, getters) => {
+            return getters.authIsAuth ? state.posts.filter((post) => post.user_id == state.current_user.id) : [];
         },
         authIsAuth: (state) => {
             return !!state.current_user;

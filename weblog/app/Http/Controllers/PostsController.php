@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 class PostsController extends Controller
 {
@@ -16,9 +17,22 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+    
+        
         $posts = Post::orderBy('updated_at', 'DESC')->get();
+        $posts->load('user');
+        $posts->load('categories');
+        // dd($request);
+        if ($request->get('category_ids')) {
+            // dd(request('category_ids'));
+            $postsByCat = Post::whereHas('categories', function (Builder $query) {
+                $query->whereIn('id', explode(',', request('category_ids')));
+            })->get();
+            // where()
+            return $postsByCat;
+        }
         return $posts;
     }
 
@@ -61,6 +75,7 @@ class PostsController extends Controller
     {
         // eager load the user
         $post->load('user');
+        $post->load('categories');
         return $post;
     }
 
@@ -72,6 +87,8 @@ class PostsController extends Controller
      */
     public function edit(Post $post)
     {
+        $post->load('user');
+        $post->load('categories');
         return $post;
     }
 
@@ -88,9 +105,10 @@ class PostsController extends Controller
         $post->post_title = request('post_title');
         $post->post_content = request('post_content');
         $post->user_id = request('user_id');
+        $post->save();
         $post->categories()->attach('category_id');
 
-        $post->save();
+        
        
     }
 
@@ -104,4 +122,10 @@ class PostsController extends Controller
     {
         $post->delete();
     }
+    // public function getPostsByCategories(Request $request, Post $post)
+    // {
+    //     $post->load('user');
+    //     $post->load('categories');
+    //     return $post;
+    // }
 }

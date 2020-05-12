@@ -17,6 +17,13 @@
                 </div>
             </div>
             <div class="form-group">
+                <p>Category/Categories</p>
+                <select class="form-control" name="category_id" v-model="form.category_id" multiple>
+                    <option disabled value="">choose one or more that apply from this list</option>
+                    <option :value="category.id" v-for="category in categories" :key="category.id">{{ category.title }}</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <div>
                     <button class="button is-primary" type="submit" :disabled="form.errors.any()">confirm edit</button>
                 </div>
@@ -28,7 +35,8 @@
 <script>
 import {mapState, mapMutations, mapActions, mapGetters} from 'vuex';
 export default {
-    mounted() {      
+    mounted() {     
+        this.$store.dispatch('getAllCategoriesAction'); 
         axios.get(`/api/posts/${this.$route.params.id}`)
                 .then(({data}) => {
                     this.form = new Form(data);
@@ -38,7 +46,9 @@ export default {
         return {
             form: new Form({
                 post_title: '',
-                post_content: ''
+                post_content: '',
+                user_id: '',
+                category_id: [],
             }),
         }
     },
@@ -47,6 +57,13 @@ export default {
                 var payload = {'formData': this.form, 'id': this.$route.params.id}
                 this.$store.dispatch('editPostAction', payload).then(() => this.$router.push('/')).catch(errors => console.log(errors));
             }   
+    },
+    computed: {
+        ...mapState([
+            'categories',
+            'current_user',
+            'auth_token'
+        ])
     },
     
 }

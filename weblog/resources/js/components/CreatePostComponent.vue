@@ -18,8 +18,9 @@
             <div class="form-group">
                 
                     <p>Category/Categories:</p>
-                    <select class="form-control" name="category_id" v-for="category in categories" :key="category.id" v-model="form.category_id" multiple>
-                        <option :value="category.id">{{ category.title }}</option>
+                    <select class="form-control" name="category_id" v-model="form.category_id" multiple>
+                        <option disabled value="">choose one or more that apply from this list</option>
+                        <option :value="category.id" v-for="category in categories" :key="category.id">{{ category.title }}</option>
                     </select>
                 
             </div>

@@ -9,6 +9,13 @@
             <p>Content:</p>
             <p>{{ post.post_content }}</p>
         </div>
+
+        <div>
+            <p>Category/Categories:</p>
+            <ul v-for="category in post.categories" :key="category.id">
+                <li>{{ category.title }}</li>
+            </ul>
+        </div>
             
         <div>
             <p>First Posted At:</p>
@@ -67,13 +74,15 @@ export default {
        this.getAllCommentsAction();
        this.form.user_id = this.current_user.id;
        this.form.post_id = this.$route.params.id;
+       
     },
     data() {
         return {
             form: new Form({
                 comment_content: '',
                 user_id: '',
-                post_id: ''
+                post_id: '',
+                category_id: ''
             }),
             // commentsOfPost: this.getCommentsByID(this.$route.params.id)
             commentsOfPost: this.$store.getters['getCommentsByID'](this.$route.params.id)
