@@ -24,13 +24,10 @@ class PostsController extends Controller
         $posts = Post::orderBy('updated_at', 'DESC')->get();
         $posts->load('user');
         $posts->load('categories');
-        // dd($request);
         if ($request->get('category_ids')) {
-            // dd(request('category_ids'));
             $postsByCat = Post::whereHas('categories', function (Builder $query) {
                 $query->whereIn('id', explode(',', request('category_ids')));
             })->get();
-            // where()
             return $postsByCat;
         }
         return $posts;

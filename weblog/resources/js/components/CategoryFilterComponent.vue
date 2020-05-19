@@ -2,7 +2,7 @@
     <div>
         <form @submit.prevent="onSubmit">
             <select name="category_id" v-model="form.category_id" multiple>
-                <option disabled value="">choose one or more that apply from this list</option>
+                <option disabled value="">choose categorie(s) to filter (hold ctrl for multiple)</option>
                 <option :value="category.id" v-for="category in categories" :key="category.id">{{ category.title }}</option>
             </select>
             <div class="has-text-right">

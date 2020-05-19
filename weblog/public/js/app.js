@@ -3621,7 +3621,7 @@ var render = function() {
           },
           [
             _c("option", { attrs: { disabled: "", value: "" } }, [
-              _vm._v("choose one or more that apply from this list")
+              _vm._v("choose categorie(s) to filter (hold ctrl for multiple)")
             ]),
             _vm._v(" "),
             _vm._l(_vm.categories, function(category) {

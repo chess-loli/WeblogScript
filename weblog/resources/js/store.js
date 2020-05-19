@@ -306,7 +306,6 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
                 console.log(payload);
                 axios.get('/api/posts', {params: { category_ids: payload.join() }}
-                   
                   )
                   .then(function (response) {
                     context.commit('filterPostsByCategoriesMutation', response)
