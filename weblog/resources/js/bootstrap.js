@@ -2,8 +2,9 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import axios from 'axios';
 import Form from './utilities/Form';
-
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import router from './routes';
+
 
 window.axios = axios;
 
@@ -30,6 +31,9 @@ axios.interceptors.response.use((response) => {
     }
 )
 Vue.use(VueRouter);
+Vue.use(BootstrapVue);
+Vue.use(IconsPlugin);
+
 
 window.Vue = Vue;
 window.Form = Form;

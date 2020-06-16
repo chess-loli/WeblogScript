@@ -16,13 +16,16 @@
                 </div>
             </div>
             <div class="form-group">
-                
-                    <p>Category/Categories:</p>
-                    <select class="form-control" name="category_id" v-model="form.category_id" multiple>
-                        <option disabled value="">choose one or more that apply from this list</option>
-                        <option :value="category.id" v-for="category in categories" :key="category.id">{{ category.title }}</option>
-                    </select>
-                
+                <p>Category/Categories:</p>
+                <select class="form-control" name="category_id" v-model="form.category_id" multiple>
+                    <option disabled value="">choose one or more that apply from this list</option>
+                    <option :value="category.id" v-for="category in categories" :key="category.id">{{ category.title }}</option>
+                </select>   
+            </div>
+            <div class="form-group">
+                <div class="form-control">
+                    <input type="file" name="post_image" id="post_image">
+                </div>
             </div>
             <div class="form-group">
                 <div class="form-control">
@@ -48,7 +51,7 @@
                     post_title: '',
                     post_content: '',
                     user_id: '',
-                    category_id: []
+                    category_id: [],
                 }),
             }
         },
