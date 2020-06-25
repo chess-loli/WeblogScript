@@ -1937,13 +1937,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1951,17 +1944,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var _this = this;
 
     this.getAllCategoriesAction().then(function (data) {
-      _this.options = data.data;
-    }); //console.log(this.getAllCategoriesAction());
-    //console.log(this.getAllCategoriesAction().data);
-    //this.getAllCategoriesAction().then(data => {
-    //    console.log(data);
-    //});
-    //this.getAllCategoriesAction().then(response => {
-    //    console.log(response);
-    //});
+      for (var i = 0; i < data.length; i++) {
+        var idAndTitle = {
+          id: data[i].id,
+          title: data[i].title
+        };
 
-    console.log(this.options);
+        _this.options.push(idAndTitle);
+      }
+    });
   },
   components: {
     Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default.a
@@ -1977,10 +1968,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['getAllCategoriesAction', 'filterPostsByCategoriesAction']), {
     onSubmit: function onSubmit() {
+      for (var i = 0; i < this.value.length; i++) {
+        this.form.category_id.push(this.value[i].id);
+      }
+
+      ;
       this.filterPostsByCategoriesAction(this.form.category_id);
     }
   }),
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['current_user', 'categories']))
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['current_user', 'categories', 'users']))
 });
 
 /***/ }),
@@ -2052,6 +2048,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_1__);
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2098,14 +2096,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
+    var _this = this;
+
     this.form.user_id = this.current_user.id;
-    this.$store.dispatch('getAllCategoriesAction');
+    this.$store.dispatch('getAllCategoriesAction').then(function (data) {
+      for (var i = 0; i < data.length; i++) {
+        var idAndTitle = {
+          id: data[i].id,
+          title: data[i].title
+        };
+
+        _this.options.push(idAndTitle);
+      }
+    });
+  },
+  components: {
+    Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default.a
   },
   data: function data() {
     return {
+      value: [],
+      options: [],
       form: new Form({
         post_title: '',
         post_content: '',
@@ -2116,10 +2136,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     onSubmit: function onSubmit() {
-      var _this = this;
+      var _this2 = this;
 
+      for (var i = 0; i < this.value.length; i++) {
+        this.form.category_id.push(this.value[i].id);
+      }
+
+      ;
       this.$store.dispatch('createPostAction', this.form).then(function () {
-        _this.$router.push('/');
+        _this2.$router.push('/');
       });
     }
   },
@@ -2437,6 +2462,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
 //
 //
 //
@@ -49650,57 +49676,78 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("label", { staticClass: "typo__label" }, [
-        _vm._v("Simple select / dropdown")
-      ]),
-      _vm._v(" "),
-      _c("multiselect", {
-        attrs: {
-          options: _vm.options,
-          multiple: true,
-          "close-on-select": false,
-          "clear-on-select": false,
-          "preserve-search": true,
-          placeholder: "pick some",
-          "preselect-first": false
-        },
-        scopedSlots: _vm._u([
-          {
-            key: "selection",
-            fn: function(ref) {
-              var values = ref.values
-              var search = ref.search
-              var isOpen = ref.isOpen
-              return [
-                values.length && !isOpen
-                  ? _c("span", { staticClass: "multiselect__single" }, [
-                      _vm._v(_vm._s(values.length) + " options selected")
-                    ])
-                  : _vm._e()
-              ]
-            }
+  return _c("div", [
+    _c(
+      "form",
+      {
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.onSubmit($event)
           }
-        ]),
-        model: {
-          value: _vm.value,
-          callback: function($$v) {
-            _vm.value = $$v
-          },
-          expression: "value"
         }
-      }),
-      _vm._v(" "),
-      _c("pre", { staticClass: "language-json" }, [
-        _c("code", [_vm._v(_vm._s(_vm.value))])
-      ])
-    ],
-    1
-  )
+      },
+      [
+        _c("label", { staticClass: "typo__label" }, [_vm._v("Search:")]),
+        _vm._v(" "),
+        _c("multiselect", {
+          attrs: {
+            options: _vm.options,
+            multiple: true,
+            "close-on-select": false,
+            "clear-on-select": false,
+            "preserve-search": true,
+            placeholder: "pick some",
+            label: "title",
+            "track-by": "title",
+            "preselect-first": false
+          },
+          scopedSlots: _vm._u([
+            {
+              key: "selection",
+              fn: function(ref) {
+                var values = ref.values
+                var search = ref.search
+                var isOpen = ref.isOpen
+                return [
+                  values.length && !isOpen
+                    ? _c("span", { staticClass: "multiselect__single" }, [
+                        _vm._v(_vm._s(values.length) + " options selected")
+                      ])
+                    : _vm._e()
+                ]
+              }
+            }
+          ]),
+          model: {
+            value: _vm.value,
+            callback: function($$v) {
+              _vm.value = $$v
+            },
+            expression: "value"
+          }
+        }),
+        _vm._v(" "),
+        _vm._m(0)
+      ],
+      1
+    )
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "has-text-right" }, [
+      _c(
+        "button",
+        { staticClass: "button is-primary", attrs: { type: "submit" } },
+        [_vm._v("Filter")]
+      )
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -49867,9 +49914,9 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "form-group" }, [
-          _c("div", { staticClass: "form-control" }, [
-            _c("p", [_vm._v("Content:")]),
-            _vm._v(" "),
+          _c("p", [_vm._v("Content:")]),
+          _vm._v(" "),
+          _c("div", [
             _c("textarea", {
               directives: [
                 {
@@ -49913,57 +49960,58 @@ var render = function() {
           _c("p", [_vm._v("Category/Categories:")]),
           _vm._v(" "),
           _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.form.category_id,
-                  expression: "form.category_id"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: { name: "category_id", multiple: "" },
-              on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.$set(
-                    _vm.form,
-                    "category_id",
-                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                  )
-                }
-              }
-            },
+            "div",
             [
-              _c("option", { attrs: { disabled: "", value: "" } }, [
-                _vm._v("choose one or more that apply from this list")
-              ]),
+              _c("label", { staticClass: "typo__label" }, [_vm._v("Search:")]),
               _vm._v(" "),
-              _vm._l(_vm.categories, function(category) {
-                return _c(
-                  "option",
-                  { key: category.id, domProps: { value: category.id } },
-                  [_vm._v(_vm._s(category.title))]
-                )
+              _c("multiselect", {
+                attrs: {
+                  options: _vm.options,
+                  multiple: true,
+                  "close-on-select": false,
+                  "clear-on-select": false,
+                  "preserve-search": true,
+                  placeholder: "pick some",
+                  label: "title",
+                  "track-by": "title",
+                  "preselect-first": false
+                },
+                scopedSlots: _vm._u([
+                  {
+                    key: "selection",
+                    fn: function(ref) {
+                      var values = ref.values
+                      var search = ref.search
+                      var isOpen = ref.isOpen
+                      return [
+                        values.length && !isOpen
+                          ? _c("span", { staticClass: "multiselect__single" }, [
+                              _vm._v(
+                                _vm._s(values.length) + " options selected"
+                              )
+                            ])
+                          : _vm._e()
+                      ]
+                    }
+                  }
+                ]),
+                model: {
+                  value: _vm.value,
+                  callback: function($$v) {
+                    _vm.value = $$v
+                  },
+                  expression: "value"
+                }
               })
             ],
-            2
+            1
           )
         ]),
         _vm._v(" "),
         _vm._m(0),
         _vm._v(" "),
         _c("div", { staticClass: "form-group" }, [
-          _c("div", { staticClass: "form-control" }, [
+          _c("div", [
             _c(
               "button",
               {
@@ -49984,7 +50032,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "form-group" }, [
-      _c("div", { staticClass: "form-control" }, [
+      _c("div", [
         _c("input", {
           attrs: { type: "file", name: "post_image", id: "post_image" }
         })
@@ -50514,6 +50562,8 @@ var render = function() {
                   _vm._v(
                     "\n                    " +
                       _vm._s(post.post_content) +
+                      "\n                    " +
+                      _vm._s(post.post_image) +
                       "\n                "
                   )
                 ]),
@@ -69107,15 +69157,11 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
       });
     },
     getAllCategoriesAction: function getAllCategoriesAction(context) {
-      console.log('getAllCategoriesAction called');
-      return new Promise(function (resolve, reject) {
-        axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('api/categories').then(function (response) {
-          context.commit('getAllCategoriesMutation', response.data);
-          resolve();
-        })["catch"](function (errors) {
-          console.log(error);
-          reject(errors);
-        });
+      return axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('api/categories').then(function (response) {
+        context.commit('getAllCategoriesMutation', response.data);
+        return response.data;
+      })["catch"](function (errors) {
+        console.log(errors);
       });
     },
     getAllUsersAction: function getAllUsersAction(context) {

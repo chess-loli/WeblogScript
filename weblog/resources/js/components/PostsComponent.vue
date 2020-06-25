@@ -12,6 +12,7 @@
                     </div>
                     <div class="message-body">
                         {{post.post_content}}
+                        {{post.post_image}}
                     </div>
                     <div class="has-text-left">
                         <router-link :to="{name:'posts.show', params: {id: post.id}}">view comments</router-link>

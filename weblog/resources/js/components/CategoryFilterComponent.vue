@@ -1,21 +1,14 @@
 <template>
-    <!-- <div>
+    <div>
         <form @submit.prevent="onSubmit">
-            <select name="category_id" v-model="form.category_id" multiple>
-                <option disabled value="">choose categorie(s) to filter (hold ctrl for multiple)</option>
-                <option :value="category.id" v-for="category in categories" :key="category.id">{{ category.title }}</option>
-            </select>
+            <label class="typo__label">Search:</label>
+            <multiselect v-model="value" :options="options" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="pick some" label="title" track-by="title" :preselect-first="false">
+                <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
+            </multiselect>
             <div class="has-text-right">
-                <button class="button is-primary" type="submit">filter</button>
+                <button class="button is-primary" type="submit">Filter</button>
             </div>
         </form>
-    </div> -->
-    <div>
-        <label class="typo__label">Simple select / dropdown</label>
-        <multiselect v-model="value" :options="options" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="pick some" :preselect-first="false">
-            <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
-        </multiselect>
-        <pre class="language-json"><code>{{ value  }}</code></pre>
     </div>
 </template>
 <script>
@@ -24,19 +17,11 @@ import Multiselect from 'vue-multiselect';
 export default {
     mounted() {
         this.getAllCategoriesAction().then((data) => {
-            this.options = data.data
-        });
-        //console.log(this.getAllCategoriesAction());
-        //console.log(this.getAllCategoriesAction().data);
-        //this.getAllCategoriesAction().then(data => {
-        //    console.log(data);
-        //});
-        //this.getAllCategoriesAction().then(response => {
-        //    console.log(response);
-        //});
-              
-        console.log(this.options);
-        
+            for (let i = 0; i < data.length; i++) {
+                const idAndTitle = {id: data[i].id, title: data[i].title};
+                this.options.push(idAndTitle);                
+            }
+        });        
     },
     components: {
         Multiselect
@@ -56,13 +41,17 @@ export default {
             'filterPostsByCategoriesAction'
         ]),
         onSubmit() {
+            for (let i = 0; i < this.value.length; i++) {
+                this.form.category_id.push(this.value[i].id)
+            };
             this.filterPostsByCategoriesAction(this.form.category_id);
         },
     },
     computed: {
         ...mapState([
                 'current_user',
-                'categories'
+                'categories',
+                'users'
             ])
     },
 }

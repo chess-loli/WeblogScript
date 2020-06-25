@@ -5,9 +5,11 @@ use Illuminate\Support\Facades\Auth;
 use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
+use App\Traits\UploadTrait;
 
 class PostsController extends Controller
 {
+    use UploadTrait;
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['index']]);
@@ -58,6 +60,14 @@ class PostsController extends Controller
         $post->post_title = request('post_title');
         $post->post_content = request('post_content');
         $post->user_id = request('user_id');
+        if ($request->has('post_image')) {
+            $image = $request->file('post_image');
+            $name = Str::slug($request->input('post_title')).'_'.time();
+            $folder = '/uploads/images';
+            $filepath = $folder . $name. '.' . $image->getClientOriginalExtension();
+            $this->uploadOne($image, $folder, 'public', $name);
+            $post->post_image = $filepath;
+        }
         $post->save();
         $post->categories()->attach($request->get('category_id'));
     }
@@ -102,6 +112,16 @@ class PostsController extends Controller
         $post->post_title = request('post_title');
         $post->post_content = request('post_content');
         $post->user_id = request('user_id');
+
+        if ($request->has('post_image')) {
+            $image = $request->file('post_image');
+            $name = Str::slug($request->input('post_title')).'_'.time();
+            $folder = '/uploads/images';
+            $filepath = $folder . $name. '.' . $image->getClientOriginalExtension();
+            $this->uploadOne($image, $folder, 'public', $name);
+            $post->post_image = $filepath;
+        }
+
         $post->save();
         $post->categories()->attach('category_id');
 

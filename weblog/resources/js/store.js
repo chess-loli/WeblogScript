@@ -112,17 +112,12 @@ export default new Vuex.Store({
             })
         },
         getAllCategoriesAction(context) {
-            console.log('getAllCategoriesAction called');
-
-            return new Promise((resolve, reject) => {
-                axios.get('api/categories').then(response => {
-                    context.commit('getAllCategoriesMutation', response.data);
-                    resolve();
-                }).catch(function (errors) {
-                    console.log(error);
-                    reject(errors);
-                });
-            });  
+            return axios.get('api/categories').then(response => {
+                context.commit('getAllCategoriesMutation', response.data);
+                return response.data
+            }).catch(function (errors) {
+                console.log(errors);
+            });    
         },
         getAllUsersAction(context) {
             return axios.get('api/users')
