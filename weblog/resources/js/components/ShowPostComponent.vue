@@ -8,6 +8,9 @@
         <div>
             <p>Content:</p>
             <p>{{ post.post_content }}</p>
+            <div>
+                <img :src="post.post_image">
+            </div>
         </div>
 
         <div>

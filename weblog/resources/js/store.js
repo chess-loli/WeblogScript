@@ -226,7 +226,10 @@ export default new Vuex.Store({
         },
         createPostAction(context, formData) {
             return new Promise((resolve, reject) => {
-                axios.post('api/posts', formData)
+                let config = {
+                    headers: {'content-type': 'multipart/form-data'}
+                }
+                axios.post('api/posts', formData, config)
                 axios.get('api/posts')
                 .then(({data}) => {
                     context.commit('createPostMutation', data)

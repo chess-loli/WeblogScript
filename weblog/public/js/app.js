@@ -2098,9 +2098,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2130,7 +2127,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         post_title: '',
         post_content: '',
         user_id: '',
-        category_id: []
+        category_id: [],
+        post_image: ''
       })
     };
   },
@@ -2143,10 +2141,57 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       ;
-      this.$store.dispatch('createPostAction', this.form).then(function () {
+      var formData = new FormData();
+      formData.append('post_title', this.form.post_title);
+      formData.append('post_content', this.form.post_content);
+      formData.append('user_id', this.form.user_id);
+      formData.append('category_id', this.form.category_id);
+      formData.append('post_image', this.form.post_image);
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = formData.entries()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var pair = _step.value;
+          console.log(pair[0] + ',' + pair[1]);
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      console.log(formData.entries());
+      this.$store.dispatch('createPostAction', formData).then(function () {
         _this2.$router.push('/');
       });
-    }
+    },
+    onFileChange: function onFileChange(e) {
+      console.log(e.target.files[0]);
+      this.form.post_image = e.target.files[0]; // var files = e.target.files || e.dataTransfer.files;
+      // if (!files.length)
+      //     return;
+      // this.form.post_image = files[0]; 
+    } // createImage(file) {
+    //     var image =  new Image();
+    //     var reader = new FileReader();
+    //     var vm = this;
+    //     reader.onload = (e) => {
+    //         vm.form.post_image = e.target.result;
+    //     };
+    //     reader.readAsDataURL(file);
+    // }
+
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['current_user', 'auth_token', 'categories']))
 });
@@ -2493,6 +2538,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2656,6 +2703,9 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
 //
 //
 //
@@ -49861,6 +49911,7 @@ var render = function() {
     _c(
       "form",
       {
+        attrs: { enctype: "multipart/form-data" },
         on: {
           submit: function($event) {
             $event.preventDefault()
@@ -50008,7 +50059,29 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _vm._m(0),
+        _c("div", { staticClass: "form-group" }, [
+          _c("div", [
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "file", name: "post_image", id: "post_image" },
+              on: {
+                change: _vm.onFileChange,
+                keydown: function($event) {
+                  return _vm.form.errors.clear("post_image")
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.form.errors.has("post_image")
+              ? _c("span", {
+                  staticClass: "help is-danger",
+                  domProps: {
+                    textContent: _vm._s(_vm.form.errors.get("post_image"))
+                  }
+                })
+              : _vm._e()
+          ])
+        ]),
         _vm._v(" "),
         _c("div", { staticClass: "form-group" }, [
           _c("div", [
@@ -50026,20 +50099,7 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("div", [
-        _c("input", {
-          attrs: { type: "file", name: "post_image", id: "post_image" }
-        })
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -50562,10 +50622,9 @@ var render = function() {
                   _vm._v(
                     "\n                    " +
                       _vm._s(post.post_content) +
-                      "\n                    " +
-                      _vm._s(post.post_image) +
-                      "\n                "
-                  )
+                      "\n                    "
+                  ),
+                  _c("div", [_c("img", { attrs: { src: post.post_image } })])
                 ]),
                 _vm._v(" "),
                 _c(
@@ -50838,7 +50897,9 @@ var render = function() {
           _c("div", [
             _c("p", [_vm._v("Content:")]),
             _vm._v(" "),
-            _c("p", [_vm._v(_vm._s(_vm.post.post_content))])
+            _c("p", [_vm._v(_vm._s(_vm.post.post_content))]),
+            _vm._v(" "),
+            _c("div", [_c("img", { attrs: { src: _vm.post.post_image } })])
           ]),
           _vm._v(" "),
           _c(
@@ -69250,7 +69311,12 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     },
     createPostAction: function createPostAction(context, formData) {
       return new Promise(function (resolve, reject) {
-        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('api/posts', formData);
+        var config = {
+          headers: {
+            'content-type': 'multipart/form-data'
+          }
+        };
+        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('api/posts', formData, config);
         axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('api/posts').then(function (_ref3) {
           var data = _ref3.data;
           context.commit('createPostMutation', data);

@@ -6,6 +6,7 @@ use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use App\Traits\UploadTrait;
+use Illuminate\Support\Str;
 
 class PostsController extends Controller
 {
@@ -53,20 +54,23 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
+        
         // maak aparte request class voor validatie: 
         // https://laravel.com/docs/5.8/validation#form-request-validation
-        $this->validate($request, ['post_title' => 'required', 'post_content' => 'required', 'user_id' => 'required']);
+        $this->validate($request, ['post_title' => 'required', 'post_content' => 'required', 'user_id' => 'required', 'post_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:8000']);
         $post = new Post();
         $post->post_title = request('post_title');
         $post->post_content = request('post_content');
         $post->user_id = request('user_id');
-        if ($request->has('post_image')) {
+        if ($request->has('post_image') && $request->post_image != null) {
             $image = $request->file('post_image');
             $name = Str::slug($request->input('post_title')).'_'.time();
-            $folder = '/uploads/images';
+            $folder = '/uploads/images/';
             $filepath = $folder . $name. '.' . $image->getClientOriginalExtension();
             $this->uploadOne($image, $folder, 'public', $name);
             $post->post_image = $filepath;
+        } else if ($request->post_image == null){
+            $post->post_image = null;
         }
         $post->save();
         $post->categories()->attach($request->get('category_id'));
@@ -116,7 +120,7 @@ class PostsController extends Controller
         if ($request->has('post_image')) {
             $image = $request->file('post_image');
             $name = Str::slug($request->input('post_title')).'_'.time();
-            $folder = '/uploads/images';
+            $folder = '/uploads/images/';
             $filepath = $folder . $name. '.' . $image->getClientOriginalExtension();
             $this->uploadOne($image, $folder, 'public', $name);
             $post->post_image = $filepath;
